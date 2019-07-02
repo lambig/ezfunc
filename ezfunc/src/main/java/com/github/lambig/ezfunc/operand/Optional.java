@@ -37,6 +37,7 @@ public class Optional<E> implements Operand<E>, Supplier<E> {
 		return !this.isEmpty();
 	}
 
+	@Override
 	public E get() {
 		return this.getOr(null);
 	}
@@ -48,7 +49,7 @@ public class Optional<E> implements Operand<E>, Supplier<E> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <X> X reduce(Reduction<? super E, ? super X> r, X dest) {
-		return (X) r.reduce(dest, this.value, 0);
+		return (X) r.reduce(dest, this.value);
 	}
 
 	@Override
@@ -58,23 +59,23 @@ public class Optional<E> implements Operand<E>, Supplier<E> {
 
 	@Override
 	public Optional<E> filter(Predicate<? super E> f) {
-		return f.eval(this.value, 0) ? this : new Optional<>(null);
+		return f.eval(this.value) ? this : new Optional<>(null);
 	}
 
 	@Override
 	public <S> Optional<S> map(Mapping<? super E, S> mapper) {
-		return wrap(this.isNotEmpty() ? mapper.map(this.value, 0) : null);
+		return wrap(this.isNotEmpty() ? mapper.map(this.value) : null);
 	}
 
 	@Override
 	public Optional<E> map(Mapping<? super E, E> mapper, Predicate<? super E> condition) {
-		return condition.eval(this.value, 0) ? wrap(mapper.map(this.value, 0)) : this;
+		return condition.eval(this.value) ? wrap(mapper.map(this.value)) : this;
 	}
 
 	@Override
 	public void forEach(Action<? super E> e) {
 		if (this.isNotEmpty()) {
-			e.exec(this.value, 0);
+			e.exec(this.value);
 		}
 	}
 

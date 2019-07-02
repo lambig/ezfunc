@@ -5,7 +5,7 @@ import com.github.lambig.ezfunc.function.Mapping;
 import com.github.lambig.ezfunc.operand.Optional;
 
 public abstract class ComparisonMapping {
-	public static <O, P> Mapping<Comparison<? super P>, Comparison<? super O>> escarate(
+	public static <O, P> Mapping<Comparison<? super P>, Comparison<? super O>> escalate(
 			Mapping<O, P> extraction) {
 		return new Mapping<Comparison<? super P>, Comparison<? super O>>() {
 			@Override

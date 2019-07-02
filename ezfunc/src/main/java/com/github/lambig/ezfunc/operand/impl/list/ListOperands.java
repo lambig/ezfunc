@@ -144,26 +144,20 @@ public class ListOperands<E> implements Operands<E> {
 
 	@Override
 	public <X> ListOperands<E> sort(Comparison<? super X> c, Mapping<? super E, X> extraction) {
-		Comparison<? super E> ownerComparison = Optional.of(c).map(ComparisonMapping.escarate(extraction)).get();
+		Comparison<? super E> ownerComparison = Optional.of(c).map(ComparisonMapping.escalate(extraction)).get();
 		return this.sort(ownerComparison);
 	}
 
 	@Override
 	public ListOperands<E> sort(Set<E> sequence) {
-		return ListOperands
-				.of(new ArrayList<>(sequence))
-				.map(PredicateMapping.equalTo())
-				.map(PredicateMapping.firstSatisfierIn(this.list))
-				.filter(not(Predicate.IS_NULL));
+		return ListOperands.of(new ArrayList<>(sequence)).map(PredicateMapping.equalTo())
+				.map(PredicateMapping.firstSatisfierIn(this.list)).filter(not(Predicate.IS_NULL));
 	}
 
 	@Override
 	public <X> ListOperands<E> sort(Set<X> sequence, Mapping<? super E, X> extraction) {
-		return ListOperands
-				.of(new ArrayList<>(sequence))
-				.map(PredicateMapping.having(extraction))
-				.map(PredicateMapping.firstSatisfierIn(this.list))
-				.filter(not(Predicate.IS_NULL));
+		return ListOperands.of(new ArrayList<>(sequence)).map(PredicateMapping.having(extraction))
+				.map(PredicateMapping.firstSatisfierIn(this.list)).filter(not(Predicate.IS_NULL));
 	}
 
 }

@@ -2,7 +2,7 @@ package com.github.lambig.ezfunc.function.predicate;
 
 import com.github.lambig.ezfunc.function.Mapping;
 
-public abstract class Predicate<E> implements Mapping<E, Boolean> {
+public abstract class Predicate<E> extends Mapping<E, Boolean> {
 	public static final Predicate<Object> IS_NULL = new Predicate<Object>() {
 		@Override
 		public boolean eval(Object current, int index) {
@@ -21,6 +21,7 @@ public abstract class Predicate<E> implements Mapping<E, Boolean> {
 
 	public static final <E> Predicate<E> always() {
 		return new Predicate<E>() {
+			@Override
 			public boolean eval(E current, int index) {
 				return true;
 			}
@@ -29,6 +30,7 @@ public abstract class Predicate<E> implements Mapping<E, Boolean> {
 
 	public static final <E> Predicate<E> never() {
 		return new Predicate<E>() {
+			@Override
 			public boolean eval(E current, int index) {
 				return false;
 			}
@@ -60,6 +62,10 @@ public abstract class Predicate<E> implements Mapping<E, Boolean> {
 	}
 
 	public abstract boolean eval(E current, int index);
+
+	public final boolean eval(E current) {
+		return this.eval(current);
+	}
 
 	@Override
 	public final Boolean map(E current, int index) {

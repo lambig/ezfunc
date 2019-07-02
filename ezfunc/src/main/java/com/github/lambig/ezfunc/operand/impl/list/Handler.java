@@ -83,7 +83,7 @@ class Handler {
 		return new Comparison<P>() {
 			@Override
 			public Order compare(P a, P b) {
-				return childComparison.compare(extraction.map(a, 0), extraction.map(b, 0));
+				return childComparison.compare(extraction.map(a), extraction.map(b));
 			}
 		};
 	}
