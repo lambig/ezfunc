@@ -26,4 +26,29 @@ public class ListOperandsTest {
 			assertThat(dest, is(not(sameInstance(orig))));
 		}
 	}
+
+	public static class empty {
+
+		@Test
+		public void is_empty() {
+			// SetUp
+			List<String> orig = Lists.newArrayList();
+			// Exercise
+			ListOperands<String> dest = ListOperands.of(orig);
+			// Verify
+			assertThat(dest.isEmpty(), is(true));
+			assertThat(dest.isNotEmpty(), is(false));
+		}
+
+		@Test
+		public void not_empty() {
+			// SetUp
+			List<String> orig = Lists.newArrayList("abc");
+			// Exercise
+			ListOperands<String> dest = ListOperands.of(orig);
+			// Verify
+			assertThat(dest.isEmpty(), is(false));
+			assertThat(dest.isNotEmpty(), is(true));
+		}
+	}
 }

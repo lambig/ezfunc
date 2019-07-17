@@ -5,14 +5,14 @@ import static com.github.lambig.ezfunc.function.predicate.Predicate.not;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
 import com.github.lambig.ezfunc.function.Action;
-import com.github.lambig.ezfunc.function.Comparison;
 import com.github.lambig.ezfunc.function.Mapping;
 import com.github.lambig.ezfunc.function.Reduction;
-import com.github.lambig.ezfunc.function.comparison.ComparisonMapping;
+import com.github.lambig.ezfunc.function.comparator.ComparatorMapping;
 import com.github.lambig.ezfunc.function.predicate.Predicate;
 import com.github.lambig.ezfunc.function.predicate.function.PredicateMapping;
 import com.github.lambig.ezfunc.operand.Operands;
@@ -39,7 +39,7 @@ public class ListOperands<E> implements Operands<E> {
 		this.list = new ArrayList<>(list);
 	}
 
-	public ListOperands(E[] elements) {
+	protected ListOperands(E[] elements) {
 		this.list = elements == null ? new ArrayList<>() : Lists.newArrayList(elements);
 	}
 
@@ -136,15 +136,15 @@ public class ListOperands<E> implements Operands<E> {
 	}
 
 	@Override
-	public ListOperands<E> sort(Comparison<? super E> c) {
+	public ListOperands<E> sort(Comparator<? super E> c) {
 		List<E> sorted = new ArrayList<>(this.list);
-		Collections.sort(sorted, c.toComparator());
+		Collections.sort(sorted, c);
 		return wrap(sorted);
 	}
 
 	@Override
-	public <X> ListOperands<E> sort(Comparison<? super X> c, Mapping<? super E, X> extraction) {
-		Comparison<? super E> ownerComparison = Optional.of(c).map(ComparisonMapping.escalate(extraction)).get();
+	public <X> ListOperands<E> sort(Comparator<? super X> c, Mapping<? super E, X> extraction) {
+		Comparator<? super E> ownerComparison = Optional.of(c).map(ComparatorMapping.escalate(extraction)).get();
 		return this.sort(ownerComparison);
 	}
 
@@ -160,4 +160,8 @@ public class ListOperands<E> implements Operands<E> {
 				.map(PredicateMapping.firstSatisfierIn(this.list)).filter(not(Predicate.IS_NULL));
 	}
 
+	@Override
+	public Operands<E> reverse() {
+		return wrap(Lists.reverse(this.asList()));
+	}
 }

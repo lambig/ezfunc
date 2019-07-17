@@ -1,10 +1,10 @@
 package com.github.lambig.ezfunc.operand.impl.list;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.github.lambig.ezfunc.function.Action;
-import com.github.lambig.ezfunc.function.Comparison;
 import com.github.lambig.ezfunc.function.Mapping;
 import com.github.lambig.ezfunc.function.Reduction;
 import com.github.lambig.ezfunc.function.predicate.Predicate;;
@@ -78,12 +78,12 @@ class Handler {
 		return result;
 	}
 
-	static <P, C> Comparison<? super P> toParentComparison(
-			Comparison<? super C> childComparison, Mapping<? super P, C> extraction) {
-		return new Comparison<P>() {
+	static <P, C> Comparator<? super P> toParentComparison(
+			Comparator<? super C> childComparator, Mapping<? super P, C> extraction) {
+		return new Comparator<P>() {
 			@Override
-			public Order compare(P a, P b) {
-				return childComparison.compare(extraction.map(a), extraction.map(b));
+			public int compare(P a, P b) {
+				return childComparator.compare(extraction.map(a), extraction.map(b));
 			}
 		};
 	}
