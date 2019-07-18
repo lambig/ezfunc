@@ -1,10 +1,10 @@
 package com.github.lambig.ezfunc.function.predicate.function;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.github.lambig.ezfunc.function.Mapping;
 import com.github.lambig.ezfunc.function.predicate.Predicate;
-import com.github.lambig.ezfunc.operand.Optional;
 import com.github.lambig.ezfunc.operand.impl.list.ListOperands;
 
 public abstract class PredicateMapping {
@@ -29,14 +29,11 @@ public abstract class PredicateMapping {
 	public static <O, P> Mapping<P, Predicate<O>> having(Mapping<O, P> extraction) {
 		return new Mapping<P, Predicate<O>>() {
 			@Override
-			public Predicate<O> map(P current, int index) {
+			public Predicate<O> map(P currentCriteria, int index) {
 				return new Predicate<O>() {
 					@Override
 					public boolean eval(O current, int index) {
-						return Optional.of(current)
-								.map(extraction)
-								.filter(Predicate.equalTo(current))
-								.isNotEmpty();
+						return Objects.equals(currentCriteria, extraction.map(current));
 					}
 				};
 			}

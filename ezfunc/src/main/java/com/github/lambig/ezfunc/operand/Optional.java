@@ -43,7 +43,7 @@ public class Optional<E> implements Operand<E>, Supplier<E> {
 	}
 
 	public E getOr(E def) {
-		return this.isEmpty() ? this.value : def;
+		return this.isEmpty() ? def : this.value;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 import com.github.lambig.ezfunc.function.Action;
 import com.github.lambig.ezfunc.function.Mapping;
@@ -65,7 +64,7 @@ public class ListOperands<E> implements Operands<E> {
 
 	@Override
 	public Optional<E> reduceOptional(Reduction<? super E, ? super E> r) {
-		return Optional.of(this.reduce(r, this.first()));
+		return Optional.of(this.filter(not(Predicate.IS_FIRST)).reduce(r, this.first()));
 	}
 
 	@Override
@@ -79,8 +78,8 @@ public class ListOperands<E> implements Operands<E> {
 	}
 
 	@Override
-	public ListOperands<E> map(Mapping<? super E, E> mapper, Predicate<? super E> condition) {
-		return null;
+	public ListOperands<E> map(Mapping<? super E, E> mapping, Predicate<? super E> condition) {
+		return wrap(Handler.map(this.list, mapping, condition));
 	}
 
 	@Override
@@ -149,19 +148,22 @@ public class ListOperands<E> implements Operands<E> {
 	}
 
 	@Override
-	public ListOperands<E> sort(Set<E> sequence) {
+	public ListOperands<E> sort(List<E> sequence) {
 		return ListOperands.of(new ArrayList<>(sequence)).map(PredicateMapping.equalTo())
 				.map(PredicateMapping.firstSatisfierIn(this.list)).filter(not(Predicate.IS_NULL));
 	}
 
 	@Override
-	public <X> ListOperands<E> sort(Set<X> sequence, Mapping<? super E, X> extraction) {
-		return ListOperands.of(new ArrayList<>(sequence)).map(PredicateMapping.having(extraction))
-				.map(PredicateMapping.firstSatisfierIn(this.list)).filter(not(Predicate.IS_NULL));
+	public <X> ListOperands<E> sort(List<X> sequence, Mapping<? super E, X> extraction) {
+		return ListOperands
+				.of(new ArrayList<>(sequence))
+				.map(PredicateMapping.having(extraction))
+				.map(PredicateMapping.firstSatisfierIn(this.list))
+				.filter(not(Predicate.IS_NULL));
 	}
 
 	@Override
-	public Operands<E> reverse() {
+	public ListOperands<E> reverse() {
 		return wrap(Lists.reverse(this.asList()));
 	}
 }

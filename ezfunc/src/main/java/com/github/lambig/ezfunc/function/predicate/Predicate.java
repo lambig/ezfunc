@@ -1,6 +1,7 @@
 package com.github.lambig.ezfunc.function.predicate;
 
 import com.github.lambig.ezfunc.function.Mapping;
+import com.google.common.base.Objects;
 
 public abstract class Predicate<E> extends Mapping<E, Boolean> {
 	public static final Predicate<Object> IS_NULL = new Predicate<Object>() {
@@ -10,11 +11,18 @@ public abstract class Predicate<E> extends Mapping<E, Boolean> {
 		}
 	};
 
+	public static final Predicate<Object> IS_FIRST = new Predicate<Object>() {
+		@Override
+		public boolean eval(Object current, int index) {
+			return index == 0;
+		}
+	};
+
 	public static final <E> Predicate<E> equalTo(E target) {
 		return new Predicate<E>() {
 			@Override
 			public boolean eval(E current, int index) {
-				return current == null;
+				return Objects.equal(current, target);
 			}
 		};
 	}
@@ -64,7 +72,7 @@ public abstract class Predicate<E> extends Mapping<E, Boolean> {
 	public abstract boolean eval(E current, int index);
 
 	public final boolean eval(E current) {
-		return this.eval(current);
+		return this.eval(current, 0);
 	}
 
 	@Override
@@ -76,7 +84,7 @@ public abstract class Predicate<E> extends Mapping<E, Boolean> {
 		return new Predicate<E>() {
 			@Override
 			public boolean eval(E current, int index) {
-				return !this.eval(current, index);
+				return !Predicate.this.eval(current, index);
 			}
 		};
 	}

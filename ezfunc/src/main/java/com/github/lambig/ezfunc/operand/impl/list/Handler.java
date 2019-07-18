@@ -7,7 +7,8 @@ import java.util.List;
 import com.github.lambig.ezfunc.function.Action;
 import com.github.lambig.ezfunc.function.Mapping;
 import com.github.lambig.ezfunc.function.Reduction;
-import com.github.lambig.ezfunc.function.predicate.Predicate;;
+import com.github.lambig.ezfunc.function.predicate.Predicate;
+import com.google.common.collect.Lists;;
 
 class Handler {
 	@SuppressWarnings("unchecked")
@@ -63,9 +64,7 @@ class Handler {
 	@SafeVarargs
 	public static <T> List<T> concat(List<T> orig, T... elems) {
 		List<T> result = new ArrayList<>(orig);
-		for (T elem : elems) {
-			result.add(elem);
-		}
+		result.addAll(Lists.newArrayList(elems));
 		return result;
 	}
 
@@ -78,7 +77,7 @@ class Handler {
 		return result;
 	}
 
-	static <P, C> Comparator<? super P> toParentComparison(
+	static <P, C> Comparator<? super P> toParentComparator(
 			Comparator<? super C> childComparator, Mapping<? super P, C> extraction) {
 		return new Comparator<P>() {
 			@Override

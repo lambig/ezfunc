@@ -1,7 +1,7 @@
 package com.github.lambig.ezfunc.operand;
 
 import java.util.Comparator;
-import java.util.Set;
+import java.util.List;
 
 import com.github.lambig.ezfunc.function.Mapping;
 import com.github.lambig.ezfunc.function.Reduction;
@@ -48,7 +48,7 @@ public interface Operands<T> extends Operand<T> {
 	 * @param sequence sequence
 	 * @return sorted operands
 	 */
-	Operands<T> sort(Set<T> sequence);
+	Operands<T> sort(List<T> sequence);
 
 	/**
 	 * sort elements with elements' property or so
@@ -56,7 +56,7 @@ public interface Operands<T> extends Operand<T> {
 	 * @param sequence sequence
 	 * @return sorted operands
 	 */
-	<X> Operands<T> sort(Set<X> sequence, Mapping<? super T, X> extraction);
+	<X> Operands<T> sort(List<X> sequence, Mapping<? super T, X> extraction);
 
 	/**
 	 * get first element
